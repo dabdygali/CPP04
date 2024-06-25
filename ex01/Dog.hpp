@@ -6,7 +6,7 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 12:23:08 by dabdygal          #+#    #+#             */
-/*   Updated: 2024/06/25 13:34:33 by dabdygal         ###   ########.fr       */
+/*   Updated: 2024/06/25 14:36:18 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 	{
 		private:
 			Brain	*_brain;
+			
 		protected:
 			static const std::string	type;
 			static const std::string	sound;
@@ -44,6 +45,8 @@
 			const std::string &	getType( void ) const;
 			const std::string & getSound( void ) const;
 			const Brain*		getBrain( void ) const;
+			void				setBrain(const Brain *brainPTR);
+			void				setBrain(const Brain &brainREF);
 			
 			// Actions
 			

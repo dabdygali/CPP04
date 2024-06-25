@@ -6,11 +6,13 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 17:12:32 by dabdygal          #+#    #+#             */
-/*   Updated: 2024/06/25 11:08:48 by dabdygal         ###   ########.fr       */
+/*   Updated: 2024/06/25 15:19:18 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
+#include <new>
+#include <cstdlib>
 #include "Animal.hpp"
 #include "Dog.hpp"
 #include "Cat.hpp"
@@ -19,28 +21,45 @@
 
 int main()
 {
-	const Animal* meta = new Animal();
-	const Animal* j = new Dog();
-	const Animal* i = new Cat();
-	const WrongAnimal*	wa = new WrongCat();
-	const WrongCat	wcat;
+	const Animal	*animals[10];
+	int				i;
 	
-	std::cout << meta->getType() << "<--- Generic Animal" << std::endl;
-	std::cout << j->getType() << "<--- Dog" << std::endl;
-	std::cout << i->getType() << "<--- Cat" << std::endl;
-	std::cout << wa->getType() << "<--- Type of WrongCat (as WrongAnimal pointer)" << std::endl << std::endl;
+	i = 0;
+	while (i < 10)
+	{
+		if (i < 5)
+			animals[i] = new(std::nothrow) Dog();
+		else
+			animals[i] = new(std::nothrow) Cat();
+		if (!animals[i])
+		{
+			std::cerr << "Error: Failed to allocate memory" << std::endl;
+			i--;
+			while (i >= 0)
+			{
+				delete animals[i];
+				i--;
+			}
+			return EXIT_FAILURE;
+		}
+		i++;
+	}
 	
-	j->makeSound(); //Will output the dog sound!
-	i->makeSound(); //Will output the cat sound!
-	meta->makeSound(); //Will output animal sound!
-	wa->makeSound(); //Will output WrongAnimal sound!
-	wcat.makeSound(); //Will output WrongCat sound
+	std::cout << std::endl;
+	animals[0]->makeSound(); //Dog sound
+	animals[5]->makeSound(); //Cat sound
+	Dog basic;
+	{
+		Dog tmp = basic;
+	}
 	std::cout << std::endl;
 	
-	delete meta;
-	delete j;
-	delete i;
-	delete wa;
-	
-	return 0;
+	i = 0;
+	while (i < 10)
+	{
+		if (animals[i])
+			delete animals[i];
+		i++;
+	}
+	return EXIT_SUCCESS;
 }
